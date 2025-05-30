@@ -82,9 +82,10 @@ const ChatBot = () => {
     <header className="bg-gradient-to-r from-yellow-400 via-orange-500 to-pink-500 backdrop-blur-md px-6 py-5 flex items-center justify-between border-b border-indigo-300">
 
         <h2 className="text-2xl font-bold text-black tracking-wide  ">Student Details Bot</h2>
-        <div className="w-10 h-10 bg-black rounded-full flex items-center justify-center text-white text-2xl font-extrabold select-none shadow-lg">
-           🤖
-        </div>
+        <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-600 border-black rounded-full flex items-center justify-center text-white text-2xl font-extrabold select-none shadow-lg">
+  🚀
+</div>
+
       </header>
 
       <main className="flex-1 p-6 overflow-y-auto flex flex-col space-y-3 bg-pink/90">
