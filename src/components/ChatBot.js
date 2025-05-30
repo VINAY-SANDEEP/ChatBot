@@ -12,10 +12,10 @@ const ChatBot = () => {
     { from: 'bot', text: '👋 Hi! Please enter your roll number to begin:', time: new Date() }
   ]);
   const [botTyping, setBotTyping] = useState(false);
+  const [exited, setExited] = useState(false);
 
   const messagesEndRef = useRef(null);
 
-  // Auto-scroll to bottom
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, botTyping]);
@@ -34,27 +34,38 @@ const ChatBot = () => {
       setBotTyping(false);
 
       if (step === 1) {
-        // Step 1: User enters roll number
         const found = students.find(
           (s) => s.roll_number.toLowerCase() === input.trim().toLowerCase()
         );
         if (found) {
           setStudent(found);
-          setStep(2); // move to confirmation step
+          setStep(2);
           addMessage('bot', `Is your name **${found.Name}**? Please type "yes" to confirm.`);
         } else {
           addMessage('bot', '❌ Roll number not found. Please try again.');
         }
       } else if (step === 2) {
-        // Step 2: Confirmation input (yes/no)
         if (input.trim().toLowerCase() === 'yes') {
-          setStep(4); // move to displaying student info
+          setStep(4);
           addMessage('bot', `✅ Verification successful! Here is your information for **${student.Name}**:`);
+
+          setTimeout(() => {
+            addMessage('bot', 'Do you want to enter another student data? (yes/no)');
+            setStep(5);
+          }, 9000);
         } else {
-          // reset to step 1 to re-enter roll number
           setStudent(null);
           setStep(1);
           addMessage('bot', '❌ Confirmation failed. Please enter your roll number again:');
+        }
+      } else if (step === 5) {
+        if (input.trim().toLowerCase() === 'yes') {
+          setStudent(null);
+          setStep(1);
+          addMessage('bot', '👋 Please enter the next student\'s roll number to begin:');
+        } else {
+          addMessage('bot', '🙏 Thank you for using MyApp. Goodbye!');
+          setExited(true);
         }
       }
     }, 1000);
@@ -88,7 +99,6 @@ const ChatBot = () => {
               `}
             style={{ animation: 'fadeIn 0.3s ease forwards' }}
           >
-            {/* Chat bubble tail */}
             <span
               className={`absolute bottom-0 ${
                 msg.from === 'bot' ? '-left-3' : '-right-3'
@@ -109,8 +119,6 @@ const ChatBot = () => {
                 />
               </svg>
             </span>
-
-            {/* Message content with bold markdown */}
             {msg.from === 'bot' ? (
               <p
                 className="whitespace-pre-wrap break-words font-medium"
@@ -145,7 +153,8 @@ const ChatBot = () => {
         <div ref={messagesEndRef} />
       </main>
 
-      {step < 4 && (
+      {/* Show input form only if not exited and step not 4 (since at 4 we show info and then move to 5) */}
+      {!exited && step !== 4 && (
         <form
           onSubmit={(e) => {
             e.preventDefault();
@@ -153,15 +162,22 @@ const ChatBot = () => {
           }}
           className="bg-white/95 backdrop-blur-md px-6 py-4 flex items-center gap-4 border-t border-indigo-300 shadow-inner"
         >
-                <input
-        type="text"
-        autoFocus
-        className="flex-grow px-5 py-3 rounded-full border border-indigo-300 focus:outline-none focus:ring-2 focus:ring-black-500 focus:border-indigo-500 placeholder:text-black-400 transition text-black"
-        placeholder={step === 1 ? "Type your roll number..." : 'Type "yes" to confirm...'}
-        value={input}
-        onChange={(e) => setInput(e.target.value)}
-        />
-
+          <input
+            type="text"
+            autoFocus
+            className="flex-grow px-5 py-3 rounded-full border border-indigo-300 focus:outline-none focus:ring-2 focus:ring-black-500 focus:border-indigo-500 placeholder:text-black-400 transition text-black"
+            placeholder={
+              step === 1
+                ? 'Type your roll number...'
+                : step === 2
+                ? 'Type "yes" to confirm...'
+                : step === 5
+                ? 'Type "yes" or "no"...'
+                : ''
+            }
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+          />
           <button
             type="submit"
             className="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-full font-semibold shadow-lg transition-transform active:scale-95"
@@ -170,7 +186,6 @@ const ChatBot = () => {
           </button>
         </form>
       )}
-
       <style jsx>{`
         @keyframes fadeIn {
           from {
@@ -186,5 +201,4 @@ const ChatBot = () => {
     </div>
   );
 };
-
 export default ChatBot;
