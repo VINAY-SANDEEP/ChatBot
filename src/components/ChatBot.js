@@ -78,15 +78,16 @@ const ChatBot = () => {
   };
 
   return (
-    <div className="flex flex-col max-w-md mx-auto h-[90vh] bg-gradient-to-tr from-indigo-200 via-purple-200 to-pink-200 rounded-2xl shadow-2xl overflow-hidden">
-      <header className="bg-white/95 backdrop-blur-md px-6 py-5 flex items-center justify-between border-b border-indigo-300">
-        <h2 className="text-2xl font-bold text-indigo-800 tracking-wide">Student Verification Bot</h2>
-        <div className="w-10 h-10 bg-indigo-600 rounded-full flex items-center justify-center text-white text-2xl font-extrabold select-none shadow-lg">
-          🎓
+    <div className="flex flex-col max-w-md mx-auto h-[90vh] bg-gradient-to-tr from-indigo-200 via-purple-200 to-pink-200 rounded-2xl shadow-2xl overflow-hidden ">
+    <header className="bg-gradient-to-r from-yellow-400 via-orange-500 to-pink-500 backdrop-blur-md px-6 py-5 flex items-center justify-between border-b border-indigo-300">
+
+        <h2 className="text-2xl font-bold text-black tracking-wide  ">Student Details Bot</h2>
+        <div className="w-10 h-10 bg-black rounded-full flex items-center justify-center text-white text-2xl font-extrabold select-none shadow-lg">
+           🤖
         </div>
       </header>
 
-      <main className="flex-1 p-6 overflow-y-auto flex flex-col space-y-3 bg-white/90">
+      <main className="flex-1 p-6 overflow-y-auto flex flex-col space-y-3 bg-pink/90">
         {messages.map((msg, idx) => (
           <div
             key={idx}
